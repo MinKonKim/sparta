@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <title>내일배움캠프를 시작하며</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+      * {
+        font-family: "Noto Sans KR", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+      }
+      .mytitle {
+        height: 250px;
+        color: whitesmoke;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background-image: url("zep_img.png");
+        background-position: center;
+        background-size: cover;
+
+        position: relative;
+      }
+
+      .mytitle > button {
+        width: 150px;
+        height: 50px;
+
+        background-color: transparent;
+        color: whitesmoke;
+        border: 1px solid whitesmoke;
+        border-radius: 5px;
+
+        margin-top: 20px;
+      }
+
+      .mycards {
+        width: 1200px;
+
+        margin: 30px auto 0px auto;
+      }
+      .mypostingbox {
+        width: 500px;
+        margin: 30px auto 0px auto;
+        padding: 20px;
+        box-shadow: 0px 0px 3px 0px black;
+        border-radius: 5px;
+      }
+      .mybtn {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      .mybtn > button {
+        margin-right: 10px;
+      }
+
+      .kakao-talk-button {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin-bottom: 30px;
+        margin-right: 15px;
+      }
+    </style>
+    <script>
+      $(document).ready(function () {
+        let url = "http://spartacodingclub.shop/sparta_api/seoulair";
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => {
+            let miseState = data["RealtimeCityAir"]["row"][0]["IDEX_NM"];
+            $("#msg").text(miseState);
+            alert("서울의 미세먼지 농도는 " + miseState + " 입니다.");
+          });
+      });
+      function share() {
+        var url = encodeURI(encodeURIComponent(card - body.url.value));
+        var title = encodeURI(card - body.title.value);
+        var shareURL =
+          "https://share.naver.com/web/shareView?url=" +
+          url +
+          "&title=" +
+          title;
+        document.location = shareURL;
+      }
+      function openclose() {
+        $("#postingbox").toggle();
+      }
+      function makeCard() {
+        let image = $("#image").val();
+        let title = $("#title").val();
+        let content = $("#content").val();
+        let date = $("#date").val();
+
+        let temp_html = `
+          <div class="col">
+            <div class="card h-100">
+              <img
+                src="${image}"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text">
+                 ${content}
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-body-secondary">${date}</small>
+              </div>
+            </div>
+          </div>`;
+
+        $("#card").append(temp_html);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="mytitle">
+      <h1>내일배움캠프를 시작하며</h1>
+      <p>현재 서울의 미세먼지 : <span id="msg" /></p>
+      <button onclick="openclose()">나의 다짐 저장하기</button>
+      <div
+        class="kakao-talk-button"
+        id="kakao-talk-channel-add-button"
+        data-channel-public-id="_ZeuTui"
+        data-size="large"
+        data-support-multiple-densities="true"
+      ></div>
+    </div>
+    <div class="mypostingbox" id="postingbox">
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="image"
+          placeholder="앨범 이미지"
+        />
+        <label for="floatingInput">이미지</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="title" placeholder="제목" />
+        <label for="floatingInput">제목</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="content"
+          placeholder="내용"
+        />
+        <label for="floatingInput">내용</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="date" placeholder="날짜" />
+        <label for="floatingInput">날짜</label>
+      </div>
+      <div class="mybtn">
+        <button onclick="makeCard()" type="button" class="btn btn-primary">
+          기록하기
+        </button>
+        <button
+          onclick="openclose()"
+          type="button"
+          class="btn btn-outline-primary"
+        >
+          닫기
+        </button>
+      </div>
+    </div>
+    <div class="mycards">
+      <div id="card" class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <img
+              src="https://images.unsplash.com/photo-1446768500601-ac47e5ec3719?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1446&q=80"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">앨범제목</h5>
+              <p class="card-text">앨범내용</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-body-secondary">앨범날짜</small>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img src="zep_img.png" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <p class="card-text">html을 배웠다!</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-body-secondary">2024.04.19</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    window.kakaoAsyncInit = function () {
+      Kakao.Channel.createAddChannelButton({
+        container: "#kakao-talk-channel-add-button",
+      });
+    };
+
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src =
+        "https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.channel.min.js";
+      js.integrity =
+        "sha384-lOC4IQUE4pvQiN/ApcSu406vhpK70lbINlZL0+vtbOFHdJtXOScqo7gjVOITEmU6";
+      js.crossOrigin = "anonymous";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "kakao-js-sdk");
+  </script>
+</html>
